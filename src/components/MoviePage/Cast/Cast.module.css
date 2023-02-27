@@ -1,0 +1,15 @@
+.cast img {
+  max-width: 80px;
+  margin: 0px;
+}
+
+.cast {
+  margin-top: 17px;
+  padding-top: 17px;
+  border-top: 1px solid rgb(202, 194, 194);
+}
+
+.cast p {
+  padding: 0;
+  margin: 3px 0px;
+}
