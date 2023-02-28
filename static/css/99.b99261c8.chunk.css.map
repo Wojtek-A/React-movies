@@ -1,0 +1,1 @@
+{"version":3,"file":"static/css/99.b99261c8.chunk.css","mappings":"AAAA,wBAGE,4BAAwC,CAFxC,eAAgB,CAChB,gBAEF","sources":["components/MoviePage/Reviews/Reviews.module.css"],"sourcesContent":[".reviews {\n  margin-top: 17px;\n  padding-top: 17px;\n  border-top: 1px solid rgb(202, 194, 194);\n}\n"],"names":[],"sourceRoot":""}
