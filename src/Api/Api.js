@@ -8,9 +8,9 @@ export const trendingMovies = async () => {
   );
   return response.data.results;
 };
-export const searchMovies = async movieName => {
+export const searchMovies = async query => {
   const response = await axios.get(
-    `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${movieName}&page=1&include_adult=false&title`
+    `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${query}&page=1&include_adult=false&title`
   );
   return response.data.results;
 };

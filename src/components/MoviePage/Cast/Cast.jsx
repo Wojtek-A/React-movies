@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import css from './Cast.module.css';
 import { useParams } from 'react-router-dom';
 import { movieCast } from 'Api/Api';
@@ -11,22 +11,22 @@ const Cast = () => {
 
   const movieId = pageId;
 
-  useEffect(() => {
-    const handelmovieCast = async () => {
-      setIsLoading(true);
-      try {
-        const foundedDetails = await movieCast(movieId);
-        setDetails([...foundedDetails.cast]);
-      } catch (error) {
-        console.log(error);
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const handelmovieCast = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const foundedDetails = await movieCast(movieId);
+      setDetails([...foundedDetails.cast]);
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [movieId]);
 
+  useEffect(() => {
     handelmovieCast();
-  }, []);
+  }, [handelmovieCast]);
 
   return (
     <>

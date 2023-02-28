@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useCallback, Suspense } from 'react';
 import css from './MoviePage.module.css';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -10,27 +10,27 @@ export const MoviePage = () => {
   const [details, setDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const location = useLocation();
+  let location = useLocation();
   const backlink = location?.state?.moviesList ?? '/';
 
   const movieId = pageId;
 
-  useEffect(() => {
-    const handelmovieDeails = async () => {
-      setIsLoading(true);
-      try {
-        const foundedDetails = await movieDetails(movieId);
-        setDetails(foundedDetails);
-      } catch (error) {
-        console.log(error);
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const handelmovieDeails = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const foundedDetails = await movieDetails(movieId);
+      setDetails(foundedDetails);
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [movieId]);
 
+  useEffect(() => {
     handelmovieDeails();
-  }, []);
+  }, [handelmovieDeails]);
 
   return (
     <>
@@ -73,8 +73,8 @@ export const MoviePage = () => {
                   <li>
                     <Link to="reviews"> Reviews </Link>
                   </li>
-                  <Outlet />
                 </ul>
+                <Outlet />
               </Suspense>
             }
           </div>
@@ -83,4 +83,3 @@ export const MoviePage = () => {
     </>
   );
 };
-// https://image.tmdb.org/t/p/w500/xo0fgAUoEeVQ7KsKeMWypyglvnf.jpg

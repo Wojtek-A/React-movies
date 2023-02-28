@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { searchMovies } from 'Api/Api';
 import { LoaderSpinner } from '../Loader/Loader';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
@@ -13,10 +13,10 @@ export const MoviesPage = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
+  const [submit, setSubmit] = useState(true);
 
   const handelChange = event => {
     setQuery(event.target.value);
-    setSearchParams({ query });
   };
 
   const onKeyDown = event => {
@@ -27,15 +27,11 @@ export const MoviesPage = () => {
 
   const handelSubmit = event => {
     event.preventDefault();
-    handelsearchMovies(query);
     setSearchParams({ query });
+    setSubmit(true);
   };
 
-  useEffect(() => {
-    handelsearchMovies();
-  }, []);
-
-  const handelsearchMovies = async () => {
+  const handelsearchMovies = useCallback(async () => {
     setIsLoading(true);
     try {
       const foundedMovies = await searchMovies(query);
@@ -45,7 +41,13 @@ export const MoviesPage = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [query]);
+
+  useEffect(() => {
+    if (submit) {
+      handelsearchMovies().then(() => setSubmit(false));
+    }
+  }, [submit, handelsearchMovies]);
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import css from './Reviews.module.css';
 import { useParams } from 'react-router-dom';
 import { movieReviews } from 'Api/Api';
@@ -11,22 +11,22 @@ const Reviews = () => {
 
   const movieId = pageId;
 
-  useEffect(() => {
-    const handelmovieReviews = async () => {
-      setIsLoading(true);
-      try {
-        const foundedDetails = await movieReviews(movieId);
-        setDetails([...foundedDetails.results]);
-      } catch (error) {
-        console.log(error);
-        setError(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const handelmovieReviews = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const foundedDetails = await movieReviews(movieId);
+      setDetails([...foundedDetails.results]);
+    } catch (error) {
+      console.log(error);
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [movieId]);
 
+  useEffect(() => {
     handelmovieReviews();
-  }, []);
+  }, [handelmovieReviews]);
 
   return (
     <>
